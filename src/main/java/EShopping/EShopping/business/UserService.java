@@ -30,8 +30,11 @@ public class UserService {
     public User saveOneUser(CreateUserRequest newUser) {
         this.userBusinessRules.existsByUserName(newUser.getUserName());
         this.userBusinessRules.existsByEmail(newUser.getEmail());
-        this.userBusinessRules.createPassword(newUser.getPassword());
         User user = this.modelMapperService.forRequest().map(newUser, User.class);
         return userRepository.save(user);
+    }
+
+    public User getOneUserByUserName(String userName) {
+        return  userRepository.findByUserName(userName);
     }
 }

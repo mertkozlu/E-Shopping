@@ -13,19 +13,13 @@ public class UserBusinessRules {
 
     public void existsByUserName(String userName) {
         if (this.userRepository.existsByUserName(userName)) {
-            throw new UserNotFoundException("User already available");
+            throw new UserNotFoundException("User name already exists !");
         }
     }
 
     public void existsByEmail(String email) {
         if (this.userRepository.existsByEmail(email)) {
-            throw new BusinessException("Email already available");
-        }
-    }
-
-    public void createPassword(String password) {
-        if (password.length() < 8) {
-            throw new BusinessException("Password cannot be lass than 8 characters");
+            throw new BusinessException("Email name already exists !");
         }
     }
 }
