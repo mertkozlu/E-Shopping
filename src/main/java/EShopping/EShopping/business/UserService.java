@@ -2,8 +2,6 @@ package EShopping.EShopping.business;
 
 import EShopping.EShopping.businessRules.UserBusinessRules;
 import EShopping.EShopping.dataAccess.UserRepository;
-import EShopping.EShopping.dto.requests.CreateUserRequest;
-import EShopping.EShopping.dto.responses.UserResponse;
 import EShopping.EShopping.entities.User;
 import EShopping.EShopping.mappers.ModelMapperService;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User saveOneUser(CreateUserRequest newUser) {
+    public User saveOneUser(User newUser) {
         this.userBusinessRules.existsByUserName(newUser.getUserName());
         this.userBusinessRules.existsByEmail(newUser.getEmail());
         User user = this.modelMapperService.forRequest().map(newUser, User.class);

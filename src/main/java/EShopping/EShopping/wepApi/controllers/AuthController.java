@@ -2,8 +2,10 @@ package EShopping.EShopping.wepApi.controllers;
 
 import EShopping.EShopping.business.RefreshTokenService;
 import EShopping.EShopping.business.UserService;
+import EShopping.EShopping.dto.requests.RefreshRequest;
 import EShopping.EShopping.dto.requests.UserRequest;
 import EShopping.EShopping.dto.responses.AuthResponse;
+import EShopping.EShopping.entities.RefreshToken;
 import EShopping.EShopping.entities.User;
 import EShopping.EShopping.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
@@ -48,6 +50,44 @@ public class AuthController {
         authResponse.setUserId(user.getUserId());
         return authResponse;
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody UserRequest registerRequest) {
+        AuthResponse authResponse = new AuthResponse();
+        if (userService.getOneUserByUserName(registerRequest.getUserName()) != null) {
+            authResponse.setMessage("Username already in use.");
+            return new
+                    ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
+        }
+        User user = new User();
+        user.setUserName(registerRequest.getUserName());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        userService.saveOneUser(user);
+
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(registerRequest.getUserName(), registerRequest.getPassword());
+        Authentication auth = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        String jwtToken = jwtTokenProvider.generateJwtToken(auth);
+
+        authResponse.setMessage("User successfully registered.");
+        authResponse.setAccessToken("Bearer " + jwtToken);
+        authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
+        authResponse.setUserId(user.getUserId());
+        return new ResponseEntity<>(authResponse, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
+        AuthResponse response = new AuthResponse();
+        RefreshToken token = refreshTokenService.getByUser(refreshRequest.getUserId());
+        if (token.getToken().equals(refreshRequest.getRefreshToken()) &&
+                !refreshTokenService.isRefreshExpired(token));
+        User user = token.getUser();
+
+        String jwtToken = jwtTokenProvider.generateJwtTokenByUserName(user.getUserId());
+    }
+
 
 
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.xml.crypto.Data;
 import java.util.Date;
 
 @Component
@@ -48,4 +49,13 @@ public class JwtTokenProvider {
         Date expiration = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token).getBody().getExpiration();
         return expiration.before(new Date());
     }
+
+    /* public String generateJwtTokenByUserName(Long userId) {
+        Data expireDate = new Date(new Date().getTime() + EXPIRES_IN);
+        return Jwts.builder().setSubject(Long.toString(userId))
+                .setIssuedAt(new Date()).setExpiration(expireDate)
+                .signWith(SignatureAlgorithm.HS512, APP_SECRET).compact();
+    }
+
+     */
 }
