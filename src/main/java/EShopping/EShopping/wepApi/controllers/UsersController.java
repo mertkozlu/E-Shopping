@@ -1,7 +1,6 @@
 package EShopping.EShopping.wepApi.controllers;
 
 import EShopping.EShopping.business.UserService;
-import EShopping.EShopping.dto.requests.CreateUserRequest;
 import EShopping.EShopping.entities.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -14,7 +13,7 @@ import java.util.List;
 public class UsersController {
     private final UserService userService;
 
-    public UsersController (UserService userService) {
+    public UsersController(UserService userService) {
         this.userService = userService;
     }
 
@@ -25,7 +24,7 @@ public class UsersController {
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public User createOneUser(@RequestBody @Validated CreateUserRequest newUser) {
+    public User createOneUser(@RequestBody @Validated User newUser) {
         return userService.saveOneUser(newUser);
     }
 }
