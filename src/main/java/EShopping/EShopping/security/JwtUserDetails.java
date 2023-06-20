@@ -14,17 +14,17 @@ import java.util.List;
 @Data
 public class JwtUserDetails implements UserDetails {
     private Long userId;
-    private String userName;
+    private String username;
     private String password;
     private String email;
     private Date birthDate;
     private int age;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUserDetails(Long userId, String userName, String password, String email, Date birthDate,
+    public JwtUserDetails(Long userId, String username, String password, String email, Date birthDate,
                           int age, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.email = email;
         this.birthDate = birthDate;
@@ -40,11 +40,6 @@ public class JwtUserDetails implements UserDetails {
                 authoritiesList);
     }
 
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
