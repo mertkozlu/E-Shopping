@@ -1,4 +1,4 @@
-package EShopping.EShopping.business;
+package EShopping.EShopping.service;
 
 import EShopping.EShopping.dataAccess.UserRepository;
 import EShopping.EShopping.entities.User;

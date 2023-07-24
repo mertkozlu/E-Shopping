@@ -1,6 +1,6 @@
 package EShopping.EShopping.config;
 
-import EShopping.EShopping.business.UserDetailsServiceImpl;
+import EShopping.EShopping.service.UserDetailsServiceImpl;
 import EShopping.EShopping.security.JwtAuthenticationEntryPoint;
 import EShopping.EShopping.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;

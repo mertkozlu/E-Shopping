@@ -1,7 +1,8 @@
-package EShopping.EShopping.wepApi.controllers;
+package EShopping.EShopping.controllers;
 
-import EShopping.EShopping.business.RefreshTokenService;
-import EShopping.EShopping.business.UserService;
+import EShopping.EShopping.dto.requests.CreateUserRequest;
+import EShopping.EShopping.service.RefreshTokenService;
+import EShopping.EShopping.service.UserService;
 import EShopping.EShopping.dto.requests.LoginRequest;
 import EShopping.EShopping.dto.requests.RefreshRequest;
 import EShopping.EShopping.dto.requests.RegisterRequest;
@@ -69,7 +70,7 @@ public class AuthController {
         user.setEmail(registerRequest.getEmail());
         user.setBirthDate(registerRequest.getBirthDate());
         user.setAge(registerRequest.getAge());
-        userService.saveOneUser(user);
+        userService.addUser(user);
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(registerRequest.getUserName(), registerRequest.getPassword());

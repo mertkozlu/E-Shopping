@@ -1,6 +1,6 @@
-package EShopping.EShopping.business;
+package EShopping.EShopping.service;
 
-import EShopping.EShopping.businessRules.CategoryBusinessRules;
+import EShopping.EShopping.rules.CategoryBusinessRules;
 import EShopping.EShopping.dataAccess.CategoryRepository;
 import EShopping.EShopping.dto.requests.CreateCategoryRequest;
 import EShopping.EShopping.entities.Category;
@@ -26,7 +26,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category createOneCategory(CreateCategoryRequest newCategory) {
+    public Category addCategory(CreateCategoryRequest newCategory) {
         this.categoryBusinessRules.existsByCategoryName(newCategory.getCategoryName());
         Category category = this.modelMapperService.forRequest().map(newCategory, Category.class);
         return categoryRepository.save(category);

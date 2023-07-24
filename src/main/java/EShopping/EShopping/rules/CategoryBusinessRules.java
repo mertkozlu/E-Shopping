@@ -1,9 +1,7 @@
-package EShopping.EShopping.businessRules;
+package EShopping.EShopping.rules;
 
 import EShopping.EShopping.dataAccess.CategoryRepository;
-import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.exceptions.CategoryNotFoundException;
-import EShopping.EShopping.exceptions.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

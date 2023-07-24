@@ -1,6 +1,6 @@
 package EShopping.EShopping.security;
 
-import EShopping.EShopping.business.UserDetailsServiceImpl;
+import EShopping.EShopping.service.UserDetailsServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;

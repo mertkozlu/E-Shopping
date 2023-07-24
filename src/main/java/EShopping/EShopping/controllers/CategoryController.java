@@ -1,6 +1,6 @@
-package EShopping.EShopping.wepApi.controllers;
+package EShopping.EShopping.controllers;
 
-import EShopping.EShopping.business.CategoryService;
+import EShopping.EShopping.service.CategoryService;
 import EShopping.EShopping.dto.requests.CreateCategoryRequest;
 import EShopping.EShopping.entities.Category;
 import org.springframework.http.HttpStatus;
@@ -11,10 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("categories")
-public class CategoriesController {
+public class CategoryController {
     private final CategoryService categoryService;
 
-    public CategoriesController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
@@ -25,7 +25,7 @@ public class CategoriesController {
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Category createOneCategory(@RequestBody @Validated CreateCategoryRequest newCategory) {
-        return categoryService.createOneCategory(newCategory);
+    public Category createCategory(@RequestBody @Validated CreateCategoryRequest newCategory) {
+        return categoryService.addCategory(newCategory);
     }
 }

@@ -1,9 +1,11 @@
-package EShopping.EShopping.businessRules;
+package EShopping.EShopping.rules;
 
 import EShopping.EShopping.dataAccess.UserRepository;
+import EShopping.EShopping.dto.requests.CreateUserRequest;
 import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.exceptions.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,5 +23,14 @@ public class UserBusinessRules {
         if (this.userRepository.existsByEmail(email)) {
             throw new BusinessException("Email name already exists !");
         }
+    }
+
+    public boolean validateRequest(CreateUserRequest newUser) {
+        boolean isSuccess = true;
+
+        if (StringUtils.isEmpty(newUser.getUserName())) {
+            isSuccess = false;
+        }
+        return isSuccess;
     }
 }
