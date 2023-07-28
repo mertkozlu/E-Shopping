@@ -31,4 +31,6 @@ public class UserController {
     public Result createUser(@RequestBody @Validated CreateUserRequest newUser) {
         return userService.addUser(newUser);
     }
+
+
 }

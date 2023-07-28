@@ -1,5 +1,7 @@
 package EShopping.EShopping.controllers;
 
+import EShopping.EShopping.dto.responses.GetAllCategoryResponse;
+import EShopping.EShopping.result.DataResult;
 import EShopping.EShopping.service.CategoryService;
 import EShopping.EShopping.dto.requests.CreateCategoryRequest;
 import EShopping.EShopping.entities.Category;
@@ -19,7 +21,7 @@ public class CategoryController {
     }
 
     @GetMapping("/getAll")
-    public List<Category> getAll() {
+    public DataResult<List<GetAllCategoryResponse>> getAll() {
         return categoryService.getAllCategories();
     }
 
