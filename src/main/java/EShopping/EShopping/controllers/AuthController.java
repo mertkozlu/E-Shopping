@@ -70,7 +70,7 @@ public class AuthController {
         user.setEmail(registerRequest.getEmail());
         user.setBirthDate(registerRequest.getBirthDate());
         user.setAge(registerRequest.getAge());
-        userService.addUser(user);
+        userService.addUser(new CreateUserRequest());
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(registerRequest.getUserName(), registerRequest.getPassword());

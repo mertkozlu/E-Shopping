@@ -2,6 +2,7 @@ package EShopping.EShopping.controllers;
 
 import EShopping.EShopping.dto.requests.CreateUserRequest;
 import EShopping.EShopping.dto.responses.GetAllUserResponse;
+import EShopping.EShopping.dto.responses.GetUserByIdResponse;
 import EShopping.EShopping.result.DataResult;
 import EShopping.EShopping.result.Result;
 import EShopping.EShopping.service.UserService;
@@ -30,6 +31,11 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public Result createUser(@RequestBody @Validated CreateUserRequest newUser) {
         return userService.addUser(newUser);
+    }
+
+    @GetMapping("/getById/{userId}")
+    public GetUserByIdResponse getUserById(@PathVariable Long userId) {
+        return userService.getUserById(userId);
     }
 
 

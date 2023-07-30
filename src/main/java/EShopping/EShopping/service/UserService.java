@@ -1,12 +1,14 @@
 package EShopping.EShopping.service;
 
+import EShopping.EShopping.dataAccess.UserRepository;
 import EShopping.EShopping.dto.requests.CreateUserRequest;
 import EShopping.EShopping.dto.responses.GetAllUserResponse;
+import EShopping.EShopping.dto.responses.GetUserByIdResponse;
+import EShopping.EShopping.entities.User;
+import EShopping.EShopping.exceptions.BusinessException;
+import EShopping.EShopping.mappers.ModelMapperService;
 import EShopping.EShopping.result.*;
 import EShopping.EShopping.rules.UserBusinessRules;
-import EShopping.EShopping.dataAccess.UserRepository;
-import EShopping.EShopping.entities.User;
-import EShopping.EShopping.mappers.ModelMapperService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +20,11 @@ public class UserService {
     private final UserBusinessRules userBusinessRules;
     private final ModelMapperService modelMapperService;
 
-    public UserService (UserRepository userRepository, UserBusinessRules userBusinessRules,
-                        ModelMapperService modelMapperService) {
+    public UserService(UserRepository userRepository, UserBusinessRules userBusinessRules,
+                       ModelMapperService modelMapperService) {
         this.userRepository = userRepository;
         this.userBusinessRules = userBusinessRules;
-        this.modelMapperService  = modelMapperService;
+        this.modelMapperService = modelMapperService;
     }
 
     public DataResult<List<GetAllUserResponse>> getAllUsers() {
@@ -41,11 +43,20 @@ public class UserService {
             userRepository.save(user);
 
             return new SuccessResult("User successfully added.");
-        }else
+        } else
             return new ErrorResult("User could not be added.");
     }
 
-    public User getOneUserByUserName(String userName) {
-        return  userRepository.findByUserName(userName);
+    public GetUserByIdResponse getUserById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BusinessException("User not found."));
+        GetUserByIdResponse getUserByIdResponse = this.modelMapperService.forResponse()
+                .map(user, GetUserByIdResponse.class);
+        return getUserByIdResponse;
     }
+
+    public User getOneUserByUserName(String userName) {
+        return userRepository.findByUserName(userName);
+    }
+
 }
