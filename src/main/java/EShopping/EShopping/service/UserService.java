@@ -1,7 +1,9 @@
 package EShopping.EShopping.service;
 
 import EShopping.EShopping.dataAccess.UserRepository;
+import EShopping.EShopping.dto.GetUserByIdDto;
 import EShopping.EShopping.dto.requests.CreateUserRequest;
+import EShopping.EShopping.dto.requests.UpdateUserRequest;
 import EShopping.EShopping.dto.responses.GetAllUserResponse;
 import EShopping.EShopping.dto.responses.GetUserByIdResponse;
 import EShopping.EShopping.entities.User;
@@ -11,7 +13,9 @@ import EShopping.EShopping.result.*;
 import EShopping.EShopping.rules.UserBusinessRules;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,15 +52,54 @@ public class UserService {
     }
 
     public GetUserByIdResponse getUserById(Long userId) {
+        GetUserByIdResponse response = new GetUserByIdResponse();
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new BusinessException("User not found."));
-        GetUserByIdResponse getUserByIdResponse = this.modelMapperService.forResponse()
-                .map(user, GetUserByIdResponse.class);
-        return getUserByIdResponse;
+                () -> new BusinessException("User can not found."));
+
+        List<GetUserByIdDto> dtos = new ArrayList<>();
+        dtos.add(convertUserGetUserByIdDto(user));
+
+        response.setGetUserByIdDto(dtos);
+        response.setResultCode("1");
+        response.setResultDescription("Success");
+
+        return response;
+
+    }
+
+    public User updateUser(Long userId, UpdateUserRequest updateUserRequest) {
+        User user = userRepository.findById(userId).orElseThrow(
+                ()-> new BusinessException("User can not found."));
+        if (Objects.nonNull(user)) {
+            user.setUserName(updateUserRequest.getUserName());
+            user.setEmail(updateUserRequest.getEmail());
+            user.setPassword(updateUserRequest.getPassword());
+            user.setBirthDate(updateUserRequest.getBirthDate());
+            user.setAge(updateUserRequest.getAge());
+        }
+
+        return userRepository.save(user);
+    }
+
+
+    public void deleteUserById(Long userId) {
+        this.userRepository.deleteById(userId);
     }
 
     public User getOneUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
+    }
+
+    GetUserByIdDto convertUserGetUserByIdDto(User user) {
+        GetUserByIdDto getUserByIdDto = new GetUserByIdDto();
+        getUserByIdDto.setUserId(user.getUserId());
+        getUserByIdDto.setUserName(user.getUserName());
+        getUserByIdDto.setEmail(user.getEmail());
+        getUserByIdDto.setBirthDate(user.getBirthDate());
+        getUserByIdDto.setAge(user.getAge());
+
+        return getUserByIdDto;
+
     }
 
 }

@@ -1,14 +1,12 @@
 package EShopping.EShopping.dto.responses;
 
+import EShopping.EShopping.dto.GetUserByIdDto;
 import lombok.Data;
 
-import java.util.Date;
+import java.util.List;
 
 @Data
-public class GetUserByIdResponse {
-    private Long userId;
-    private String userName;
-    private String email;
-    private Date birthDate;
-    private int age;
+public class GetUserByIdResponse extends BaseResponse {
+    List<GetUserByIdDto> getUserByIdDto;
+
 }
