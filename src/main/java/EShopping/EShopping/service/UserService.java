@@ -11,9 +11,10 @@ import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.mappers.ModelMapperService;
 import EShopping.EShopping.result.*;
 import EShopping.EShopping.rules.UserBusinessRules;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -51,25 +52,39 @@ public class UserService {
             return new ErrorResult("User could not be added.");
     }
 
-    public GetUserByIdResponse getUserById(Long userId) {
+    public ResponseEntity<GetUserByIdResponse> getUserById(Long userId) {
+//        GetUserByIdResponse response = new GetUserByIdResponse();
+//        User user = userRepository.findById(userId).orElseThrow(
+//                () -> new BusinessException("User can not found."));
+
+//        List<GetUserByIdDto> dtos = new ArrayList<>();
+//        dtos.add(convertUserGetUserByIdDto(user));
+//
+//        response.setGetUserByIdDto(dtos);
+//        response.setResultCode("1");
+//        response.setResultDescription("Success");
+//
+//        return response;
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         GetUserByIdResponse response = new GetUserByIdResponse();
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new BusinessException("User can not found."));
+        response.setUserId(user.getUserId());
+        response.setUserName(user.getUserName());
+        response.setEmail(user.getEmail());
+        response.setBirthDate(user.getBirthDate());
+        response.setAge(user.getAge());
 
-        List<GetUserByIdDto> dtos = new ArrayList<>();
-        dtos.add(convertUserGetUserByIdDto(user));
-
-        response.setGetUserByIdDto(dtos);
-        response.setResultCode("1");
-        response.setResultDescription("Success");
-
-        return response;
+        ResponseEntity<GetUserByIdResponse> result = new ResponseEntity<>(response,
+                HttpStatus.OK);
+        return result;
 
     }
 
     public User updateUser(Long userId, UpdateUserRequest updateUserRequest) {
         User user = userRepository.findById(userId).orElseThrow(
-                ()-> new BusinessException("User can not found."));
+                () -> new BusinessException("User can not found."));
         if (Objects.nonNull(user)) {
             user.setUserName(updateUserRequest.getUserName());
             user.setEmail(updateUserRequest.getEmail());

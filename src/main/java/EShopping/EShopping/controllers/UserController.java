@@ -9,6 +9,7 @@ import EShopping.EShopping.result.Result;
 import EShopping.EShopping.service.UserService;
 import EShopping.EShopping.entities.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/getById/{userId}")
-    public GetUserByIdResponse getUserById(@PathVariable Long userId) {
+    public ResponseEntity<GetUserByIdResponse> getUserById(@PathVariable Long userId) {
         return userService.getUserById(userId);
     }
 

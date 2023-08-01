@@ -1,7 +1,9 @@
 package EShopping.EShopping.controllers;
 
 import EShopping.EShopping.dto.responses.GetAllCategoryResponse;
+import EShopping.EShopping.dto.responses.GetCategoryByIdResponse;
 import EShopping.EShopping.result.DataResult;
+import EShopping.EShopping.result.Result;
 import EShopping.EShopping.service.CategoryService;
 import EShopping.EShopping.dto.requests.CreateCategoryRequest;
 import EShopping.EShopping.entities.Category;
@@ -27,7 +29,14 @@ public class CategoryController {
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Category createCategory(@RequestBody @Validated CreateCategoryRequest newCategory) {
+    public Result createCategory(@RequestBody @Validated CreateCategoryRequest newCategory) {
         return categoryService.addCategory(newCategory);
     }
+
+    @GetMapping("/getById/{categoryId}")
+    public GetCategoryByIdResponse getCategoryById(@PathVariable Long categoryId) {
+        return categoryService.getCategoryById(categoryId);
+    }
+
+
 }
