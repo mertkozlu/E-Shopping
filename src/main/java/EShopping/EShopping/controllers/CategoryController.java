@@ -1,5 +1,6 @@
 package EShopping.EShopping.controllers;
 
+import EShopping.EShopping.dto.requests.UpdateCategoryRequest;
 import EShopping.EShopping.dto.responses.GetAllCategoryResponse;
 import EShopping.EShopping.dto.responses.GetCategoryByIdResponse;
 import EShopping.EShopping.result.DataResult;
@@ -8,6 +9,7 @@ import EShopping.EShopping.service.CategoryService;
 import EShopping.EShopping.dto.requests.CreateCategoryRequest;
 import EShopping.EShopping.entities.Category;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +36,20 @@ public class CategoryController {
     }
 
     @GetMapping("/getById/{categoryId}")
-    public GetCategoryByIdResponse getCategoryById(@PathVariable Long categoryId) {
+    public ResponseEntity<GetCategoryByIdResponse> getCategoryById(@PathVariable Long categoryId) {
         return categoryService.getCategoryById(categoryId);
+    }
+
+    @PutMapping("/update/{categoryId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId,
+                                                   @RequestBody @Validated UpdateCategoryRequest updateCategoryRequest) {
+        return categoryService.updateCategory(categoryId, updateCategoryRequest);
+    }
+
+    @DeleteMapping("/delete/{categoryId}")
+    public void deleteCategory(@PathVariable Long categoryId) {
+        this.categoryService.deleteCategory(categoryId);
     }
 
 

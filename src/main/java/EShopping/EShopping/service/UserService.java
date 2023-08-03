@@ -1,7 +1,6 @@
 package EShopping.EShopping.service;
 
 import EShopping.EShopping.dataAccess.UserRepository;
-import EShopping.EShopping.dto.GetUserByIdDto;
 import EShopping.EShopping.dto.requests.CreateUserRequest;
 import EShopping.EShopping.dto.requests.UpdateUserRequest;
 import EShopping.EShopping.dto.responses.GetAllUserResponse;
@@ -53,22 +52,12 @@ public class UserService {
     }
 
     public ResponseEntity<GetUserByIdResponse> getUserById(Long userId) {
-//        GetUserByIdResponse response = new GetUserByIdResponse();
-//        User user = userRepository.findById(userId).orElseThrow(
-//                () -> new BusinessException("User can not found."));
 
-//        List<GetUserByIdDto> dtos = new ArrayList<>();
-//        dtos.add(convertUserGetUserByIdDto(user));
-//
-//        response.setGetUserByIdDto(dtos);
-//        response.setResultCode("1");
-//        response.setResultDescription("Success");
-//
-//        return response;
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         GetUserByIdResponse response = new GetUserByIdResponse();
         response.setUserId(user.getUserId());
         response.setUserName(user.getUserName());
@@ -82,18 +71,19 @@ public class UserService {
 
     }
 
-    public User updateUser(Long userId, UpdateUserRequest updateUserRequest) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new BusinessException("User can not found."));
+    public ResponseEntity<User> updateUser(Long userId, UpdateUserRequest updateUserRequest) {
+        User user = userRepository.findById(userId).orElse(null);
         if (Objects.nonNull(user)) {
             user.setUserName(updateUserRequest.getUserName());
             user.setEmail(updateUserRequest.getEmail());
             user.setPassword(updateUserRequest.getPassword());
             user.setBirthDate(updateUserRequest.getBirthDate());
             user.setAge(updateUserRequest.getAge());
-        }
 
-        return userRepository.save(user);
+            User updateUser = userRepository.save(user);
+            return new ResponseEntity<>(updateUser, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
@@ -103,18 +93,6 @@ public class UserService {
 
     public User getOneUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
-    }
-
-    GetUserByIdDto convertUserGetUserByIdDto(User user) {
-        GetUserByIdDto getUserByIdDto = new GetUserByIdDto();
-        getUserByIdDto.setUserId(user.getUserId());
-        getUserByIdDto.setUserName(user.getUserName());
-        getUserByIdDto.setEmail(user.getEmail());
-        getUserByIdDto.setBirthDate(user.getBirthDate());
-        getUserByIdDto.setAge(user.getAge());
-
-        return getUserByIdDto;
-
     }
 
 }

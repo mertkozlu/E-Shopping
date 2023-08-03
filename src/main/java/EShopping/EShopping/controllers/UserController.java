@@ -42,7 +42,7 @@ public class UserController {
 
     @PutMapping("/update/{userId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public User updateUser(@PathVariable Long userId,@RequestBody @Validated UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<User> updateUser(@PathVariable Long userId,@RequestBody @Validated UpdateUserRequest updateUserRequest) {
         return userService.updateUser(userId, updateUserRequest);
     }
 

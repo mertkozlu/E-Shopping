@@ -1,19 +1,20 @@
 package EShopping.EShopping.service;
 
-import EShopping.EShopping.dto.GetCategoryByIdDto;
-import EShopping.EShopping.dto.responses.GetAllCategoryResponse;
-import EShopping.EShopping.dto.responses.GetCategoryByIdResponse;
-import EShopping.EShopping.exceptions.BusinessException;
-import EShopping.EShopping.result.*;
-import EShopping.EShopping.rules.CategoryBusinessRules;
 import EShopping.EShopping.dataAccess.CategoryRepository;
 import EShopping.EShopping.dto.requests.CreateCategoryRequest;
+import EShopping.EShopping.dto.requests.UpdateCategoryRequest;
+import EShopping.EShopping.dto.responses.GetAllCategoryResponse;
+import EShopping.EShopping.dto.responses.GetCategoryByIdResponse;
 import EShopping.EShopping.entities.Category;
 import EShopping.EShopping.mappers.ModelMapperService;
+import EShopping.EShopping.result.*;
+import EShopping.EShopping.rules.CategoryBusinessRules;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,30 +46,39 @@ public class CategoryService {
             categoryRepository.save(category);
 
             return new SuccessResult("Category successfully added.");
-        }else
+        } else
             return new ErrorResult("Category could not added.");
     }
 
-    public GetCategoryByIdResponse getCategoryById(Long categoryId) {
+    public ResponseEntity<GetCategoryByIdResponse> getCategoryById(Long categoryId) {
+
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         GetCategoryByIdResponse response = new GetCategoryByIdResponse();
-        Category category = categoryRepository.findById(categoryId).orElseThrow(
-                ()-> new BusinessException("Category can not found."));
+        response.setCategoryId(category.getCategoryId());
+        response.setCategoryName(category.getCategoryName());
 
-        List<GetCategoryByIdDto> dtos = new ArrayList<>();
-        dtos.add(convertCategoryGetCategoryByIdDto(category));
-
-        response.setGetCategoryByIdDto(dtos);
-        response.setResultCode("1");
-        response.setResultDescription("Success");
-
-        return response;
+        ResponseEntity<GetCategoryByIdResponse> result = new ResponseEntity<>(response,
+                HttpStatus.OK);
+        return result;
     }
 
-    public GetCategoryByIdDto convertCategoryGetCategoryByIdDto(Category category) {
-        GetCategoryByIdDto getCategoryByIdDto = new GetCategoryByIdDto();
-        getCategoryByIdDto.setCategoryId(category.getCategoryId());
-        getCategoryByIdDto.setCategoryName(category.getCategoryName());
+    public ResponseEntity<Category> updateCategory(Long categoryId, UpdateCategoryRequest updateCategoryRequest) {
+        Category category = categoryRepository.findById(categoryId).orElse(null);
 
-        return getCategoryByIdDto;
+        if (Objects.nonNull(category)) {
+            category.setCategoryName(updateCategoryRequest.getCategoryName());
+
+            Category updateCategory = categoryRepository.save(category);
+            return new ResponseEntity<>(updateCategory, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    public void deleteCategory(Long categoryId) {
+        this.categoryRepository.deleteById(categoryId);
     }
 }
