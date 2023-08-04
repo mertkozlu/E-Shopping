@@ -35,6 +35,7 @@ public class CategoryService {
         List<GetAllCategoryResponse> getAllCategoryResponses = categories.stream()
                 .map(category -> this.modelMapperService.forResponse()
                         .map(category, GetAllCategoryResponse.class)).collect(Collectors.toList());
+
         return new SuccessDataResult<List<GetAllCategoryResponse>>
                 (getAllCategoryResponses, true, "Categories successfully listed.");
     }

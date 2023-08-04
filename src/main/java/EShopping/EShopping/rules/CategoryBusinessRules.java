@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class CategoryBusinessRules {
-    private final CategoryRepository categoryRepository;
+    private  CategoryRepository categoryRepository;
 
     public void existsByCategoryName(String categoryName) {
         if (this.categoryRepository.existsByCategoryName(categoryName)) {
