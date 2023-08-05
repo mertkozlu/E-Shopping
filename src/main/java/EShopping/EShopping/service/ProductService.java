@@ -97,6 +97,8 @@ public class ProductService {
     }
 
     public void deleteProductById(Long productId) {
-        this.productRepository.deleteById(productId);
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new BusinessException("Product can not found."));
+        this.productRepository.delete(product);
     }
 }

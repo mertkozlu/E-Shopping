@@ -6,6 +6,7 @@ import EShopping.EShopping.dto.requests.UpdateCategoryRequest;
 import EShopping.EShopping.dto.responses.GetAllCategoryResponse;
 import EShopping.EShopping.dto.responses.GetCategoryByIdResponse;
 import EShopping.EShopping.entities.Category;
+import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.mappers.ModelMapperService;
 import EShopping.EShopping.result.*;
 import EShopping.EShopping.rules.CategoryBusinessRules;
@@ -79,6 +80,8 @@ public class CategoryService {
     }
 
     public void deleteCategoryById(Long categoryId) {
-        this.categoryRepository.deleteById(categoryId);
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new BusinessException("Category can not found."));
+        this.categoryRepository.delete(category);
     }
 }

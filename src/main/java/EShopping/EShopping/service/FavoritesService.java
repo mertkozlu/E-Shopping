@@ -4,11 +4,9 @@ import EShopping.EShopping.dataAccess.FavoritesRepository;
 import EShopping.EShopping.dto.requests.CreateFavoritesRequest;
 import EShopping.EShopping.dto.responses.GetAllFavoritesResponse;
 import EShopping.EShopping.entities.Favorites;
+import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.mappers.ModelMapperService;
-import EShopping.EShopping.result.DataResult;
-import EShopping.EShopping.result.ErrorResult;
-import EShopping.EShopping.result.Result;
-import EShopping.EShopping.result.SuccessResult;
+import EShopping.EShopping.result.*;
 import EShopping.EShopping.rules.FavoritesBusinessRules;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +31,7 @@ public class FavoritesService {
                 .map(favorite -> this.modelMapperService.forResponse()
                         .map(favorite, GetAllFavoritesResponse.class)).collect(Collectors.toList());
 
-        return new DataResult<>(getAllFavoritesResponses, true, "Favorites successfully listed.");
+        return new SuccessDataResult<>(getAllFavoritesResponses, true, "Favorites successfully listed.");
     }
 
     public Result createFavorites(CreateFavoritesRequest newFavorites) {
@@ -47,6 +45,8 @@ public class FavoritesService {
     }
 
     public void deleteFavoriteById(Long favoritesId) {
+        Favorites favorites =  favoritesRepository.findById(favoritesId).orElseThrow(
+                () -> new BusinessException("Favorite can not found."));
         this.favoritesRepository.deleteById(favoritesId);
     }
 }
