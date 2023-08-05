@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -29,4 +31,10 @@ public class Product {
     @JoinColumn(name = "category_id")
     @JsonIgnore
     private Category category;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    List<Favorites> favorites;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    List<Cart> carts;
 }

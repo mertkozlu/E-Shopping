@@ -78,7 +78,7 @@ public class CategoryService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public void deleteCategory(Long categoryId) {
+    public void deleteCategoryById(Long categoryId) {
         this.categoryRepository.deleteById(categoryId);
     }
 }

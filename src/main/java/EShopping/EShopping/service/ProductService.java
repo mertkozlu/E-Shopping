@@ -3,13 +3,11 @@ package EShopping.EShopping.service;
 import EShopping.EShopping.dataAccess.CategoryRepository;
 import EShopping.EShopping.dataAccess.ProductRepository;
 import EShopping.EShopping.dto.requests.CreateProductRequest;
-import EShopping.EShopping.dto.requests.CreateUserRequest;
 import EShopping.EShopping.dto.requests.UpdateProductRequest;
 import EShopping.EShopping.dto.responses.GetAllProductResponse;
 import EShopping.EShopping.dto.responses.GetProductByIdResponse;
 import EShopping.EShopping.entities.Category;
 import EShopping.EShopping.entities.Product;
-import EShopping.EShopping.entities.User;
 import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.mappers.ModelMapperService;
 import EShopping.EShopping.result.*;
@@ -98,7 +96,7 @@ public class ProductService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public void deleteUpdate(Long productId) {
+    public void deleteProductById(Long productId) {
         this.productRepository.deleteById(productId);
     }
 }

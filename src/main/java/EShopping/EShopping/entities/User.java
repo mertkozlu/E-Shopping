@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,4 +22,10 @@ public class User {
     private String email;
     private Date birthDate;
     private int age;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Favorites> favorites;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Cart> carts;
 }
