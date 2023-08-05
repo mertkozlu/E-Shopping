@@ -62,8 +62,7 @@ public class CategoryService {
         response.setCategoryId(category.getCategoryId());
         response.setCategoryName(category.getCategoryName());
 
-        ResponseEntity<GetCategoryByIdResponse> result = new ResponseEntity<>(response,
-                HttpStatus.OK);
+        ResponseEntity<GetCategoryByIdResponse> result = new ResponseEntity<>(response, HttpStatus.OK);
         return result;
     }
 
