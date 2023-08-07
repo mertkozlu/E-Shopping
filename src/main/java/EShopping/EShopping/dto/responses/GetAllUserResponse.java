@@ -11,4 +11,5 @@ public class GetAllUserResponse {
     private String email;
     private Date birthDate;
     private int age;
+    Date createDate;
 }

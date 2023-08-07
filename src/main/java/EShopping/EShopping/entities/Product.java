@@ -37,4 +37,8 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<Cart> carts;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    List<Comment> comments;
+
 }

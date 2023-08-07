@@ -23,9 +23,15 @@ public class User {
     private Date birthDate;
     private int age;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    Date createDate;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Favorites> favorites;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Cart> carts;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Comment> comments;
 }

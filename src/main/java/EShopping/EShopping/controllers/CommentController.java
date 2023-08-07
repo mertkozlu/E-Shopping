@@ -1,11 +1,13 @@
 package EShopping.EShopping.controllers;
 
+import EShopping.EShopping.dto.requests.CreateCommentRequest;
 import EShopping.EShopping.dto.responses.GetAllCommentResponse;
 import EShopping.EShopping.result.DataResult;
+import EShopping.EShopping.result.Result;
 import EShopping.EShopping.service.CommentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +23,11 @@ public class CommentController {
     @GetMapping("/getAll")
     public DataResult<List<GetAllCommentResponse>> getAll() {
         return commentService.getAllComment();
+    }
+
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Result createComment(@RequestBody @Validated CreateCommentRequest newComment) {
+        return commentService.createComment(newComment);
     }
 }
