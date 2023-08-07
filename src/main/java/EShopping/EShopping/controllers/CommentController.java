@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("comment")
@@ -25,8 +26,9 @@ public class CommentController {
     }
 
     @GetMapping("/getAll")
-    public DataResult<List<GetAllCommentResponse>> getAll() {
-        return commentService.getAllComment();
+    public DataResult<List<GetAllCommentResponse>> getAll(@RequestParam Optional<Long> userId,
+                                                          @RequestParam Optional<Long> productId) {
+        return commentService.getAllComment(userId, productId);
     }
 
     @PostMapping("/add")

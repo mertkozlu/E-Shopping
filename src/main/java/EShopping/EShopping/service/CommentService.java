@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,9 +40,16 @@ public class CommentService {
         this.productRepository = productRepository;
     }
 
-    public DataResult<List<GetAllCommentResponse>> getAllComment() {
-        List<Comment> comments = commentRepository.findAll();
-        List<GetAllCommentResponse> getAllCommentResponses = comments.stream()
+    public DataResult<List<GetAllCommentResponse>> getAllComment(Optional<Long> userId, Optional<Long> productId) {
+        List<Comment> list;
+        if (userId.isPresent()) {
+            list = commentRepository.findByUser_UserId(userId.get());
+        }else if (productId.isPresent()) {
+            list = commentRepository.findByProduct_ProductId(productId.get());
+        }else
+            list = commentRepository.findAll();
+
+        List<GetAllCommentResponse> getAllCommentResponses = list.stream()
                 .map(comment -> this.modelMapperService.forResponse()
                         .map(comment, GetAllCommentResponse.class)).collect(Collectors.toList());
 

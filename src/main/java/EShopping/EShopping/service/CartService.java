@@ -11,6 +11,7 @@ import EShopping.EShopping.rules.CartBusinessRules;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,9 +26,13 @@ public class CartService {
         this.cartBusinessRules = cartBusinessRules;
     }
 
-    public DataResult<List<GetAllCartResponse>> getAllCart() {
-        List<Cart> carts = cartRepository.findAll();
-        List<GetAllCartResponse> getAllCartResponses = carts.stream()
+    public DataResult<List<GetAllCartResponse>> getAllCart(Optional<Long> userId) {
+        List<Cart> list;
+        if (userId.isPresent()) {
+            list = cartRepository.findByUser_UserId(userId.get());
+        }else
+            list = cartRepository.findAll();
+        List<GetAllCartResponse> getAllCartResponses = list.stream()
                 .map(cart -> this.modelMapperService.forResponse()
                         .map(cart, GetAllCartResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<>(getAllCartResponses, true,"Cart successfully listed.");

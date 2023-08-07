@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,9 +37,13 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public DataResult<List<GetAllProductResponse>> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        List<GetAllProductResponse> getAllProductResponses = products.stream()
+    public DataResult<List<GetAllProductResponse>> getAllProducts(Optional<Long> categoryId) {
+        List<Product> list;
+        if (categoryId.isPresent()) {
+            list = productRepository.findByCategory_CategoryId(categoryId.get());
+        }else
+            list = productRepository.findAll();
+        List<GetAllProductResponse> getAllProductResponses = list.stream()
                 .map(product -> this.modelMapperService.forResponse()
                         .map(product, GetAllProductResponse.class)).collect(Collectors.toList());
 

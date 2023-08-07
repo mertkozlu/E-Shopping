@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cart")
@@ -21,8 +22,8 @@ public class CartController {
     }
 
     @GetMapping("/getAll")
-    public DataResult<List<GetAllCartResponse>> getAll(){
-        return cartService.getAllCart();
+    public DataResult<List<GetAllCartResponse>> getAll(Optional<Long> userId){
+        return cartService.getAllCart(userId);
     }
 
     @PostMapping("/add")

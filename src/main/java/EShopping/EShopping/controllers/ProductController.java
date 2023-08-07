@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -25,8 +26,8 @@ public class ProductController {
     }
 
     @GetMapping("/getAll")
-    public DataResult<List<GetAllProductResponse>> getAll() {
-        return productService.getAllProducts();
+    public DataResult<List<GetAllProductResponse>> getAll(Optional<Long> categoryId) {
+        return productService.getAllProducts(categoryId);
     }
 
     @PostMapping("/add")

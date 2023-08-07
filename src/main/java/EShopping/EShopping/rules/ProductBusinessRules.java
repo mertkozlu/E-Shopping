@@ -2,7 +2,7 @@ package EShopping.EShopping.rules;
 
 import EShopping.EShopping.dataAccess.ProductRepository;
 import EShopping.EShopping.dto.requests.CreateProductRequest;
-import EShopping.EShopping.exceptions.CategoryNotFoundException;
+import EShopping.EShopping.exceptions.ProductNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class ProductBusinessRules {
 
     public void existsByProductName(String productName) {
         if (this.productRepository.existsByProductName(productName)) {
-            throw new CategoryNotFoundException("Product name already exists !");
+            throw new ProductNotFoundException("Product name already exists !");
         }
     }
 

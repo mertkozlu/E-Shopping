@@ -13,7 +13,5 @@ public class GetAllCartResponse {
     private String productName;
     private String productDescription;
     private double productPrice;
-    Date createDate;
-
 
 }
