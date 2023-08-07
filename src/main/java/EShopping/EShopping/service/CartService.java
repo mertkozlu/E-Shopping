@@ -44,7 +44,8 @@ public class CartService {
     }
 
     public void deleteCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new BusinessException("Cart can not found."));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(
+                () -> new BusinessException("Cart can not found."));
         this.cartRepository.delete(cart);
     }
 }

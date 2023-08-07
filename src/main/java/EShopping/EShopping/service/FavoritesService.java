@@ -47,6 +47,6 @@ public class FavoritesService {
     public void deleteFavoriteById(Long favoritesId) {
         Favorites favorites =  favoritesRepository.findById(favoritesId).orElseThrow(
                 () -> new BusinessException("Favorite can not found."));
-        this.favoritesRepository.deleteById(favoritesId);
+        this.favoritesRepository.delete(favorites);
     }
 }
