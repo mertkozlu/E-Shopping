@@ -59,7 +59,7 @@ public class CommentService {
             return new ErrorResult("Comment could not added.");
     }
 
-    public ResponseEntity<GetCommentByIdResponse> getByIdComment(Long commentId) {
+    public ResponseEntity<GetCommentByIdResponse> getCommentById(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElse(null);
 
         if (comment == null) {

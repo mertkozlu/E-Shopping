@@ -2,7 +2,6 @@ package EShopping.EShopping.controllers;
 
 import EShopping.EShopping.dto.requests.CreateCommentRequest;
 import EShopping.EShopping.dto.requests.UpdateCommentRequest;
-import EShopping.EShopping.dto.requests.UpdateProductRequest;
 import EShopping.EShopping.dto.responses.GetAllCommentResponse;
 import EShopping.EShopping.dto.responses.GetCommentByIdResponse;
 import EShopping.EShopping.entities.Comment;
@@ -37,8 +36,8 @@ public class CommentController {
     }
 
     @GetMapping("getById/{commentId}")
-    public ResponseEntity<GetCommentByIdResponse> getById(@PathVariable Long commentId) {
-        return commentService.getByIdComment(commentId);
+    public ResponseEntity<GetCommentByIdResponse> getCommentById(@PathVariable Long commentId) {
+        return commentService.getCommentById(commentId);
     }
 
     @PutMapping("update/{commentId}")

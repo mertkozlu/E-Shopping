@@ -2,7 +2,6 @@ package EShopping.EShopping.dto.responses;
 
 import lombok.Data;
 
-import java.util.Date;
 
 @Data
 public class GetAllFavoritesResponse {
