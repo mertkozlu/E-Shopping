@@ -1,11 +1,13 @@
 package EShopping.EShopping.service;
 
 import EShopping.EShopping.dataAccess.CategoryRepository;
+import EShopping.EShopping.dataAccess.ProductRepository;
 import EShopping.EShopping.dto.requests.CreateCategoryRequest;
 import EShopping.EShopping.dto.requests.UpdateCategoryRequest;
 import EShopping.EShopping.dto.responses.GetAllCategoryResponse;
 import EShopping.EShopping.dto.responses.GetCategoryByIdResponse;
 import EShopping.EShopping.entities.Category;
+import EShopping.EShopping.entities.Product;
 import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.mappers.ModelMapperService;
 import EShopping.EShopping.result.*;
@@ -13,6 +15,7 @@ import EShopping.EShopping.rules.CategoryBusinessRules;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,12 +26,14 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ModelMapperService modelMapperService;
     private final CategoryBusinessRules categoryBusinessRules;
+    private final ProductRepository productRepository;
 
     public CategoryService(CategoryRepository categoryRepository, ModelMapperService modelMapperService,
-                           CategoryBusinessRules categoryBusinessRules) {
+                           CategoryBusinessRules categoryBusinessRules, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.modelMapperService = modelMapperService;
         this.categoryBusinessRules = categoryBusinessRules;
+        this.productRepository = productRepository;
     }
 
     public DataResult<List<GetAllCategoryResponse>> getAllCategories() {
@@ -80,6 +85,14 @@ public class CategoryService {
     }
 
     public void deleteCategoryById(Long categoryId) {
+        Integer categoryCount = categoryRepository.countCategory();
+        if (categoryCount < 1) {
+            throw new BusinessException("Category cannot be deleted there most be add list one category.");
+        }
+        List<Product> products = productRepository.findByCategory_CategoryId(categoryId);
+        if (!CollectionUtils.isEmpty(products)) {
+            throw new BusinessException("Category cannot be deleted while the user has posts.");
+        }
         Category category = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new BusinessException("Category can not found."));
         this.categoryRepository.delete(category);
