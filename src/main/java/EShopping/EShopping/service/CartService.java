@@ -1,16 +1,20 @@
 package EShopping.EShopping.service;
 
 import EShopping.EShopping.dataAccess.CartRepository;
+import EShopping.EShopping.dataAccess.ProductRepository;
 import EShopping.EShopping.dto.requests.CreateCartRequest;
 import EShopping.EShopping.dto.responses.GetAllCartResponse;
 import EShopping.EShopping.entities.Cart;
+import EShopping.EShopping.entities.Product;
 import EShopping.EShopping.exceptions.BusinessException;
 import EShopping.EShopping.mappers.ModelMapperService;
 import EShopping.EShopping.result.*;
 import EShopping.EShopping.rules.CartBusinessRules;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,11 +23,13 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ModelMapperService modelMapperService;
     private final CartBusinessRules cartBusinessRules;
+    private final ProductRepository productRepository;
 
-    public CartService(CartRepository cartRepository, ModelMapperService modelMapperService, CartBusinessRules cartBusinessRules) {
+    public CartService(CartRepository cartRepository, ModelMapperService modelMapperService, CartBusinessRules cartBusinessRules, ProductRepository productRepository) {
         this.cartRepository = cartRepository;
         this.modelMapperService = modelMapperService;
         this.cartBusinessRules = cartBusinessRules;
+        this.productRepository = productRepository;
     }
 
     public DataResult<List<GetAllCartResponse>> getAllCart(Optional<Long> userId) {
@@ -49,8 +55,8 @@ public class CartService {
     }
 
     public void deleteCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(
-                () -> new BusinessException("Cart can not found."));
-        this.cartRepository.delete(cart);
+            // ?
     }
+
+
 }
